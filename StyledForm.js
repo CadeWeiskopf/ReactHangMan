@@ -33,7 +33,7 @@ class StyledForm extends React.Component {
 
         var s = this.state.results;
         for (var i = 0; i < this.state.answer.length; i++) {
-            if (this.state.answer[i] == inputRef.current.value) {
+            if (this.state.answer[i] == inputRef.current.value.toLowerCase()) {
                 if (i == 0) {
                     s = this.state.answer[i] + s.substring(1);
                 } else {
@@ -45,7 +45,7 @@ class StyledForm extends React.Component {
 
         var done = !(s.indexOf('_') > -1);
         if (!done) {
-            done = inputRef.current.value == this.state.answer;
+            done = inputRef.current.value.toLowerCase() == this.state.answer;
             if (done) {
                 for (var i = 0; i < this.state.answer.length; i++) {
                     if (i == 0) {
