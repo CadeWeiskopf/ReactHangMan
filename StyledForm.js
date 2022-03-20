@@ -1,7 +1,23 @@
 import React from 'react';
 import './index.css';
+import './index';
 
+//var head = 'o';
+//var arm1 = '\\';
+//var arm2 = '/';
+//var body = '|';
+//var leg1 = '/';
+//var leg2 = '\\';
+var head = '';
+var arm1 = '';
+var arm2 = '';
+var body = '';
+var leg1 = '';
+var leg2 = '';
+var man = ['', '', '', '', '', ''];
+var manChars = ['o', '|', '\\', '/', '/', '\\'];
 var guessCount = 0;
+var lettersGuessed = [];
 const inputRef = React.createRef();
 
 class StyledForm extends React.Component {
@@ -21,34 +37,56 @@ class StyledForm extends React.Component {
     }
 
     handleGuess() {
+        var correctGuess = false;
+        var inLettersGuessed = false;
+        for (var c of lettersGuessed) {
+            if (c == inputRef.current.value.toLowerCase().trim()) {
+                inLettersGuessed = true;
+            }
+        }
+
+        if (inLettersGuessed) {
+            return;
+        }
+
+        lettersGuessed.push(inputRef.current.value);
+
         if (this.state.answer.length == 0) {
+            // no game
             return;
         }
 
         if (guessCount === 6) {
+            // game over
             return;
         }
         
         inputRef.current.value = inputRef.current.value.trim();
         this.setState({guesses: this.state.guesses + ' ' + inputRef.current.value});
 
+        // update letter board
         var s = this.state.results;
         for (var i = 0; i < this.state.answer.length; i++) {
             if (this.state.answer[i] == inputRef.current.value.toLowerCase()) {
+                // show letters
                 if (i == 0) {
                     s = this.state.answer[i] + s.substring(1);
                 } else {
                     s = s.substring(0, i * 2) + this.state.answer[i] + s.substring(i * 2 + 1);
                 }
+                correctGuess = true;
             }
         }
         this.setState({results: s});
 
+        // check if all letters are revealed
         var done = !(s.indexOf('_') > -1);
         if (!done) {
+            // check if user guessed the whole answer
             done = inputRef.current.value.toLowerCase() == this.state.answer;
             if (done) {
                 for (var i = 0; i < this.state.answer.length; i++) {
+                    // show letters
                     if (i == 0) {
                         s = this.state.answer[i] + s.substring(1);
                     } else {
@@ -59,7 +97,11 @@ class StyledForm extends React.Component {
             }
         }
 
-        guessCount++;
+        if (!correctGuess) {
+            man[guessCount] = manChars[guessCount];
+            guessCount++;
+        }
+
         if (done || guessCount === 6) {
             // game over
             var answerString = '';
@@ -84,11 +126,18 @@ class StyledForm extends React.Component {
         }
         this.setState({results: result, answer: word, answerDisplay: '', answerDisplayMsg: '', guesses: ''});
         guessCount = 0;
+        man = ['', '', '', '', '', ''];
+        lettersGuessed = [];
     }
 
     render() {
         return (
             <>
+            <h2 className='hangmantop'>&nbsp;</h2>
+            <h2 className='hangman'>&nbsp;{man[0]}</h2>
+            <h2 className='hangman'>&nbsp;{man[2]}{man[1]}{man[3]}</h2>
+            <h2 className='hangman'>&nbsp;{man[4]}{man[5]}</h2>
+            <h2 className='hangman'>&nbsp;</h2>
             <form className='forms'>
                 <input ref={inputRef} id='guess' className='inputs' type='text' name='name' autoComplete='off' onClick={this.handleClickInput} />
                 <div>
@@ -108,3 +157,4 @@ class StyledForm extends React.Component {
 }
 
 export default StyledForm;
+export {man};

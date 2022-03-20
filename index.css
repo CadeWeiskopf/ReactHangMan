@@ -9,6 +9,24 @@
     padding-top: 1vh;
 }
 
+.hangman {
+    margin-top: -2.1vh;
+    margin-right: 30vw;
+    margin-left: 30vw;
+    border-right: 0px;
+    border-bottom: 0px;
+    border-top: 0px;
+    border-style: solid;
+}
+
+.hangmantop {
+    margin-right: 30vw;
+    margin-left: 30vw;
+    border-bottom: 0px;
+    border-style: solid;
+    width: 20vw;
+}
+
 .outputs {
     font-size: xx-large;
     margin-left: 25vw;
