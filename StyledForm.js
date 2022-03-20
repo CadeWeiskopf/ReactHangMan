@@ -29,6 +29,7 @@ class StyledForm extends React.Component {
             return;
         }
         
+        inputRef.current.value = inputRef.current.value.trim();
         this.setState({guesses: this.state.guesses + ' ' + inputRef.current.value});
 
         var s = this.state.results;
